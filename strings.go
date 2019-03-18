@@ -2,6 +2,7 @@ package utils
 
 import (
 	"encoding/binary"
+	"regexp"
 	"strings"
 )
 
@@ -72,4 +73,9 @@ func StringListContain(sl []string, str string) bool {
 		}
 	}
 	return rc
+}
+
+// IsAlphaNumber func, string form is alpha or number
+func IsAlphaNumber(str string) bool {
+	return regexp.MustCompile(`^[a-z0-9A-Z]+$`).MatchString(str)
 }
