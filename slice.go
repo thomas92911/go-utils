@@ -83,6 +83,24 @@ func StringSliceEqual(a, b []string) bool {
 	return true
 }
 
+// StringSliceContain func
+func StringSliceContain(a []string, b string) (c bool) {
+	if a == nil {
+		return false
+	}
+
+	c = false
+
+	for _, v := range a {
+		if v == b {
+			c = true
+			break
+		}
+	}
+
+	return c
+}
+
 // ByteSliceEqual func
 func ByteSliceEqual(a, b []byte) bool {
 	if len(a) != len(b) {
