@@ -16,7 +16,10 @@ var LogLevel = 3
 var LogVerbose = 1
 
 // LogFileMaxSize define
-var LogFileMaxSize int64 = 100000000
+var LogFileMaxSize int64 = 10000000
+
+// LogFileLimits define
+var LogFileLimits = 10
 
 // Tomlog struct
 type Tomlog struct {
@@ -57,6 +60,15 @@ func openLogFile() {
 	tomlog.logpath += tstr
 	//log.Println(ipmlog)
 
+	tomlog.w = nil
+	tomlog.f = nil
+}
+
+func checkCreateLogFile() {
+	if tomlog.f != nil {
+		return
+	}
+
 	f, err := os.Create(tomlog.logpath)
 	if err != nil {
 		fmt.Printf("open log file: %s failed.\n", tomlog.logpath)
@@ -74,6 +86,7 @@ func (ipm Tomlog) Write(p []byte) (n int, err error) {
 	}
 
 	loglocker.Lock()
+	checkCreateLogFile()
 	if tomlog.w != nil {
 		n, err = tomlog.w.Write(p)
 		tomlog.w.Flush()
@@ -93,10 +106,9 @@ func (ipm Tomlog) Write(p []byte) (n int, err error) {
 
 // CleanLogPath func
 func CleanLogPath(logpath string) {
-	maxReserved := 10
 	list := GetFilesOrderByTime(logpath, false, true)
 	for i, item := range list {
-		if i >= maxReserved {
+		if i >= LogFileLimits-1 {
 			os.Remove(item.fullpath)
 		}
 	}

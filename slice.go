@@ -119,3 +119,21 @@ func ByteSliceEqual(a, b []byte) bool {
 
 	return true
 }
+
+// ByteSliceCopy func
+func ByteSliceCopy(src []byte, srcOffset int, dst []byte, dstOffset, count int) bool {
+	srcLen := len(src)
+	if srcOffset > srcLen || count > srcLen || srcOffset+count > srcLen {
+		return false
+	}
+	dstLen := len(dst)
+	if dstOffset > dstLen || count > dstLen || dstOffset+count > dstLen {
+		return false
+	}
+	index := 0
+	for i := srcOffset; i < srcOffset+count; i++ {
+		dst[dstOffset+index] = src[srcOffset+index]
+		index++
+	}
+	return true
+}

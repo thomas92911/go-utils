@@ -4,12 +4,24 @@ import (
 	"bytes"
 	"compress/flate"
 	"compress/gzip"
+	"crypto/sha256"
 	"io"
 	"io/ioutil"
 
 	"github.com/itchio/lzma"
 	base "github.com/multiformats/go-multibase"
 )
+
+// BytesToHash func
+func BytesToHash(bs []byte) (h string, err error) {
+	sha2 := sha256.New()
+	sha2.Write(bs)
+	h, err = BytesToBase(sha2.Sum(nil))
+	if err != nil {
+		return
+	}
+	return h, nil
+}
 
 // BytesToBase func
 func BytesToBase(bs []byte) (s string, err error) {
