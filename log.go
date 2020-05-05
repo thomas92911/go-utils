@@ -52,7 +52,6 @@ func openLogFile() {
 		tomlog.f = nil
 	}
 	tomlog.logpath = GetCurrentDirectory() + "/log"
-	CheckAndCreatePath(tomlog.logpath)
 	CleanLogPath(tomlog.logpath)
 
 	t := time.Now()
@@ -68,6 +67,8 @@ func checkCreateLogFile() {
 	if tomlog.f != nil {
 		return
 	}
+	path := GetCurrentDirectory() + "/log"
+	CheckAndCreatePath(path)
 
 	f, err := os.Create(tomlog.logpath)
 	if err != nil {
